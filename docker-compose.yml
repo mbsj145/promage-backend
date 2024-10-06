@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  server:
+    container_name: server
+    image: server
+    build:
+      context: ./
+    env_file:
+      - .env.development
+    ports:
+      - 4000:4000

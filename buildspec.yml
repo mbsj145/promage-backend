@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <your-account-id>.dkr.ecr.<your-region>.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t promage-server .
+      - docker tag promage-server:latest <your-account-id>.dkr.ecr.<your-region>.amazonaws.com/promage-server:latest
+  post_build:
+    commands:
+      - echo Pushing the Docker image...
+      - docker push <your-account-id>.dkr.ecr.<your-region>.amazonaws.com/promage-server:latest
